@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SQA Practice Test</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Georgia", serif;
+            background: #1c1a17 url("https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=1200&q=80")
+                no-repeat center center fixed;
+            background-size: cover;
+            color: #e8e4d9;
+        }
+
+        .overlay {
+            background: rgba(0, 0, 0, 0.65);
+            min-height: 100vh;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: auto;
+            background: rgba(28, 26, 23, 0.95);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+            border: 1px solid #3a372f;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 34px;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #d9c7a3;
+        }
+
+        .question {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #f0e6d2;
+        }
+
+        .option {
+            padding: 12px 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            background: #2c2a24;
+            border: 1px solid #4a463e;
+            cursor: pointer;
+            transition: 0.25s ease;
+            user-select: none;
+        }
+
+        .option:hover {
+            background: #3a362f;
+            border-color: #a7926c;
+        }
+
+        #explanation {
+            margin-top: 25px;
+            padding: 18px;
+            border-left: 5px solid #a0855b;
+            background: rgba(160, 133, 91, 0.15);
+            display: none;
+            border-radius: 8px;
+            color: #e5d8bf;
+        }
+
+        #nextBtn {
+            margin-top: 25px;
+            padding: 12px 25px;
+            font-size: 18px;
+            background: #a0855b;
+            color: #1c1a17;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: none;
+            letter-spacing: 1px;
+            transition: 0.25s ease;
+            font-weight: bold;
+        }
+
+        #nextBtn:hover {
+            background: #c7a776;
+        }
+
+        .correct {
+            background: rgba(59, 93, 42, 1) !important;
+            border-color: rgba(111, 168, 95, 1) !important;
+            color: #f6f7f1;
+        }
+
+        .wrong {
+            background: rgba(90, 43, 43, 1) !important;
+            border-color: rgba(184, 106, 106, 1) !important;
+            color: #f6f7f1;
+        }
+
+        .fade {
+            opacity: 0.6;
+        }
+
+        /* END SCREEN */
+        #endScreen {
+            text-align: center;
+            display: none;
+            padding: 40px;
+        }
+
+        #retryBtn {
+            margin-top: 25px;
+            padding: 12px 30px;
+            font-size: 18px;
+            background: #a0855b;
+            color: #1c1a17;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: 0.25s;
+            font-weight: bold;
+        }
+
+        #retryBtn:hover {
+            background: #c7a776;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="overlay">
+        <div class="container">
+            <h2>Topic — Software Process Quality Metrics</h2>
+
+            <div id="quizSection">
+                <div id="quizBox"></div>
+                <div id="explanation"></div>
+                <button id="nextBtn" onclick="loadNext()">Next Question →</button>
+            </div>
+
+            <div id="endScreen">
+                <h2>Well done!</h2>
+                <p id="scoreText"></p>
+                <button id="retryBtn" onclick="location.reload()">Refresh & Try Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+        q: "What is the purpose of the error severity classification system outlined in MIL-STD-498?",
+        options: ["To ensure all errors are treated equally, regardless of severity.", "To eliminate the need for error detection in software development.", "To categorize errors based on their impact on software quality.", "To standardize the number of errors across all software projects."],
+        correct: 2,
+        explanation: "The error severity classification system in MIL-STD-498 helps prioritize issues, ensuring critical errors are addressed promptly during software development.By categorizing errors, teams can allocate resources effectively, focusing on high-impact errors that could significantly affect software performance and reliability.This classification system enhances communication among stakeholders, providing a clear understanding of error implications and guiding decision-making processes in software quality assurance."
+    },
+    {
+        q: "In the calculation of Weighted Code Error Density (WCED), what is the role of the number of function points (NFP)?",
+        options: ["It is irrelevant to the calculation of WCED.", "It is used to count the total number of errors found.", "It determines the severity of each error detected.", "It serves as a denominator to normalize the weighted errors."],
+        correct: 3,
+        explanation: "The number of function points (NFP) quantifies the functional size of the software, reflecting its complexity and user requirements.In the context of WCED, NFP acts as a normalization factor, allowing for fair comparison across different software projects and sizes.By using NFP as a denominator, WCED provides a more accurate measure of error density, accounting for variations in software functionality."
+    },
+    {
+        q: "The application of weighted measures in error density metrics allows for a more accurate evaluation of software quality situations.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "Weighted measures in error density metrics enhance the evaluation process by considering the impact of different error types on software quality.By assigning weights to errors based on severity, developers can prioritize issues that significantly affect user experience and system performance.This approach leads to more informed decision-making, enabling teams to allocate resources effectively and improve overall software quality."
+    },
+    {
+        q: "The average severity of development errors can be assessed using the Average Severity of Development Errors (ASDE) metric.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "The Average Severity of Development Errors (ASDE) metric quantifies the average impact of errors encountered during software development processes.ASDE helps teams prioritize error resolution by providing insights into which errors have the most significant impact on software quality.Utilizing ASDE can enhance overall software quality by focusing resources on addressing the most severe development errors effectively."
+    },
+    {
+        q: "The weighted error measure is calculated by summing the number of errors in each severity class multiplied by their respective weights.",
+        options: ["True", "False"],
+        correct: 0,
+        explanation: "The weighted error measure provides a more nuanced view of software quality by considering the severity of different types of errors.By assigning weights to severity classes, this metric helps prioritize error resolution based on potential impact on the software.This approach aids in effective resource allocation during the debugging process, ensuring critical issues are addressed first."
+    },
+    {
+        q: "What is the primary focus of error severity metrics?",
+        options: ["To detect adverse situations related to increasing numbers of severe errors", "To measure the time taken for software development processes", "To evaluate the complexity of the software's code", "To quantify the total number of errors identified during the software testing phase"],
+        correct: 0,
+        explanation: "Error severity metrics primarily aim to identify and quantify the impact of severe errors on software functionality and user experience.By monitoring severe errors, teams can prioritize fixes and allocate resources effectively to mitigate risks associated with critical failures.Understanding error severity helps in improving overall software quality, ensuring that the most detrimental issues are addressed promptly during the development process."
+    },
+    {
+        q: "Which metric helps to understand the average severity of development errors?",
+        options: ["Average Development Error Density (ADED)", "ASDE (Average Severity of Development Errors)", "CED (Code Error Density)", "NCE (Number of Code Errors)"],
+        correct: 1,
+        explanation: "The Average Severity of Development Errors (ASDE) metric quantifies the impact of errors, aiding in prioritizing error resolution efforts effectively.ASDE is calculated by assessing the severity levels of various errors, providing a comprehensive view of overall software quality.Utilizing ASDE allows teams to identify patterns in error severity, facilitating targeted improvements in the software development process and quality assurance."
+    },
+    {
+        q: "What does the calculation of Error Density Metrics typically involve?",
+        options: ["Ignoring errors and focusing solely on the accuracy of the model.", "Subjectively assessing the severity of individual errors.", "Only counting the total number of errors without considering the data size.", "Counting the number of errors and normalizing by a measure of size."],
+        correct: 3,
+        explanation: "Error Density Metrics are crucial for assessing software quality by quantifying the number of errors relative to the software's size or complexity.Normalization is typically done using software volume measures, such as lines of code (LOC) or function points, to provide context for error counts.This metric helps identify areas needing improvement, guiding developers in prioritizing code reviews and testing efforts to enhance overall software quality."
+    },
+    {
+        q: "In the context of error density metrics, what does NDE represent?",
+        options: ["Total number of development errors detected in the process", "Number of documentation errors only", "Number of errors found in the testing phase only", "Net development efficiency of the software"],
+        correct: 0,
+        explanation: "NDE, or Number of Development Errors, quantifies the total errors identified during the software development lifecycle, reflecting process effectiveness.This metric helps in assessing the quality of the software by providing insights into the frequency of errors encountered during development.Monitoring NDE can guide teams in improving their processes, ultimately leading to enhanced software quality and reduced error rates."
+    }
+        ];
+
+        let index = 0;
+        let score = 0;
+        let shuffledQuestions = [];
+
+        function shuffle(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function startQuiz() {
+            shuffledQuestions = shuffle([...questions]);
+            index = 0;
+            score = 0;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const qObj = shuffledQuestions[index];
+            const quizBox = document.getElementById("quizBox");
+
+            document.getElementById("explanation").style.display = "none";
+            document.getElementById("nextBtn").style.display = "none";
+
+            quizBox.innerHTML = `
+            <div class='question'>${qObj.q}</div>
+            ${qObj.options
+                .map(
+                    (opt, i) =>
+                        `<div class='option' data-idx='${i}' onclick='checkAnswer(${i}, this)'>${opt}</div>`
+                )
+                .join("")}
+        `;
+        }
+
+        function checkAnswer(selected, element) {
+            const qObj = shuffledQuestions[index];
+            const explanation = document.getElementById("explanation");
+            const nextBtn = document.getElementById("nextBtn");
+
+            const optionDivs = document.querySelectorAll(".option");
+            optionDivs.forEach((opt) => {
+                opt.classList.add("fade");
+                opt.style.pointerEvents = "none";
+            });
+
+            optionDivs.forEach((opt) => {
+                const idx = parseInt(opt.getAttribute("data-idx"));
+
+                if (idx === qObj.correct) {
+                    opt.classList.remove("fade");
+                    opt.classList.add("correct");
+                }
+
+                if (idx === selected && selected !== qObj.correct) {
+                    opt.classList.remove("fade");
+                    opt.classList.add("wrong");
+                }
+            });
+
+            if (selected === qObj.correct) {
+                explanation.innerHTML = "✔ Correct!";
+                score++;
+            } else {
+                explanation.innerHTML = `
+                ❌ Wrong!<br><br>
+                <b>Correct Answer:</b> ${qObj.options[qObj.correct]}<br><br>
+                ${qObj.explanation}
+            `;
+            }
+
+            explanation.style.display = "block";
+            nextBtn.style.display = "inline-block";
+        }
+
+        function loadNext() {
+            index++;
+
+            if (index >= shuffledQuestions.length) {
+                showEndScreen();
+            } else {
+                loadQuestion();
+            }
+        }
+
+        function showEndScreen() {
+            document.getElementById("quizSection").style.display = "none";
+
+            const scoreText = document.getElementById("scoreText");
+            scoreText.innerHTML = `You scored <b>${score}</b> out of <b>${shuffledQuestions.length}</b>.`;
+
+            document.getElementById("endScreen").style.display = "block";
+        }
+
+        startQuiz();
+    </script>
+</body>
+</html>
